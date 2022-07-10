@@ -6,11 +6,11 @@ import (
 	"math"
 )
 
-func DirectTransform(values *[]float64, borders ...int) (result []complex128, err error) {
+func DirectTransform(values *[]float64, borders ...int) (result []complex128, errF error) {
 	defer func() {
 		if msg := recover(); msg != nil {
 			result = nil
-			err = fmt.Errorf("%v", msg)
+			errF = fmt.Errorf("%v", msg)
 		}
 	}()
 
@@ -45,11 +45,11 @@ func DirectTransform(values *[]float64, borders ...int) (result []complex128, er
 	return result, nil
 }
 
-func InverseTransform(values *[]complex128, borders ...int) (result []float64, err error) {
+func InverseTransform(values *[]complex128, borders ...int) (result []float64, errF error) {
 	defer func() {
 		if msg := recover(); msg != nil {
 			result = nil
-			err = fmt.Errorf("%v", msg)
+			errF = fmt.Errorf("%v", msg)
 		}
 	}()
 

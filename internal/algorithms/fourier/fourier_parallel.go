@@ -19,11 +19,11 @@ type inverseRetValues struct {
 }
 
 // Оболочка для параллельного выполнения рассчета прямого ДПФ
-func DirectTransformParallel(values *[]float64, threadCount int) (result []complex128, err error) {
+func DirectTransformParallel(values *[]float64, threadCount int) (result []complex128, errF error) {
 	defer func() { // Функция отлова непредвиденной паники
 		if msg := recover(); msg != nil {
 			result = nil
-			err = fmt.Errorf("%v", msg)
+			errF = fmt.Errorf("%v", msg)
 		}
 	}()
 
@@ -73,11 +73,11 @@ func DirectTransformParallel(values *[]float64, threadCount int) (result []compl
 }
 
 // Оболочка для параллельного выполнения рассчета обратного ДПФ
-func InverseTransformParallel(values *[]complex128, threadCount int) (result []float64, err error) {
+func InverseTransformParallel(values *[]complex128, threadCount int) (result []float64, errF error) {
 	defer func() { // Функция отлова непредвиденной паники
 		if msg := recover(); msg != nil {
 			result = nil
-			err = fmt.Errorf("%v", msg)
+			errF = fmt.Errorf("%v", msg)
 		}
 	}()
 
