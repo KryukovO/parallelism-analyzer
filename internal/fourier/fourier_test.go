@@ -7,17 +7,17 @@ import (
 )
 
 func TestDirectTransform(t *testing.T) {
-	type args struct {
+	type args struct { // Структура для описания аргументов функции DirectTransform
 		values []float64
 		left   int
 		right  int
 	}
 
-	table := []struct {
-		name    string       // наименование теста
-		args    args         // аргумент функции
-		result  []complex128 // ожидаемый результат
-		isError bool         // должа ли появиться ошибка
+	table := []struct { // Таблица тестов
+		name    string       // Наименование теста
+		args    args         // Аргумент функции
+		result  []complex128 // Ожидаемый результат
+		isError bool         // Должна ли появиться ошибка
 	}{
 		{
 			name:    "Zero length",
@@ -109,17 +109,17 @@ func TestDirectTransformWrongAmountArgs(t *testing.T) {
 }
 
 func TestInverseTransform(t *testing.T) {
-	type args struct {
+	type args struct { // Структура для описания аргументов функции InverseTransform
 		values []complex128
 		left   int
 		right  int
 	}
 
 	table := []struct {
-		name    string    // наименование теста
-		args    args      // аргумент функции
-		result  []float64 // ожидаемый результат
-		isError bool      // должа ли появиться ошибка
+		name    string    // Наименование теста
+		args    args      // Аргумент функции
+		result  []float64 // Ожидаемый результат
+		isError bool      // Должна ли появиться ошибка
 	}{
 		{
 			name:    "Zero length",
@@ -247,4 +247,222 @@ func TestInverseTransformWrongAmountArgs(t *testing.T) {
 	)
 	assert.EqualError(t, err, "границы должны быть указаны двумя значениями, получено: 3")
 	assert.EqualValues(t, []float64(nil), s)
+}
+
+func TestDirectTransformParallel(t *testing.T) {
+	type args struct { // Структура для описания аргументов функции DirectTransform
+		values      []float64
+		threadCount int
+	}
+
+	table := []struct { // Таблица тестов
+		name    string       // Наименование теста
+		args    args         // Аргумент функции
+		result  []complex128 // Ожидаемый результат
+		isError bool         // Должна ли появиться ошибка
+	}{
+		{
+			name:    "Zero length",
+			args:    args{values: []float64{}, threadCount: 2},
+			result:  nil,
+			isError: true,
+		},
+		{
+			name:    "Zero threads",
+			args:    args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 0},
+			result:  nil,
+			isError: true,
+		},
+		{
+			name: "Normal relation N/threads",
+			args: args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 2},
+			result: []complex128{
+				(45 + 0i),
+				(-5.0000000000000036 + 15.388417685876266i),
+				(-5.000000000000002 + 6.881909602355868i),
+				(-5.000000000000003 + 3.6327126400268i),
+				(-5.000000000000002 + 1.6245984811645275i),
+				(-5 - 5.510910596163082e-15i),
+				(-4.999999999999998 - 1.6245984811645382i),
+				(-5.000000000000038 - 3.6327126400267824i),
+				(-4.999999999999987 - 6.881909602355874i),
+				(-4.999999999999973 - 15.388417685876234i),
+			},
+			isError: false,
+		},
+		{
+			name: "Too many threads",
+			args: args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 16},
+			result: []complex128{
+				(45 + 0i),
+				(-5.0000000000000036 + 15.388417685876266i),
+				(-5.000000000000002 + 6.881909602355868i),
+				(-5.000000000000003 + 3.6327126400268i),
+				(-5.000000000000002 + 1.6245984811645275i),
+				(-5 - 5.510910596163082e-15i),
+				(-4.999999999999998 - 1.6245984811645382i),
+				(-5.000000000000038 - 3.6327126400267824i),
+				(-4.999999999999987 - 6.881909602355874i),
+				(-4.999999999999973 - 15.388417685876234i),
+			},
+			isError: false,
+		},
+		{
+			name: "Irrational relation N/threads",
+			args: args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 3},
+			result: []complex128{
+				(45 + 0i),
+				(-5.0000000000000036 + 15.388417685876266i),
+				(-5.000000000000002 + 6.881909602355868i),
+				(-5.000000000000003 + 3.6327126400268i),
+				(-5.000000000000002 + 1.6245984811645275i),
+				(-5 - 5.510910596163082e-15i),
+				(-4.999999999999998 - 1.6245984811645382i),
+				(-5.000000000000038 - 3.6327126400267824i),
+				(-4.999999999999987 - 6.881909602355874i),
+				(-4.999999999999973 - 15.388417685876234i),
+			},
+			isError: false,
+		},
+	}
+
+	for _, test := range table {
+		t.Run(test.name, func(t *testing.T) {
+			S, err := DirectTransformParallel(&test.args.values, test.args.threadCount)
+			if (err != nil) != test.isError {
+				t.Errorf("fourier.DirectTransform(): error received = %v, expected = %v", err, test.isError)
+			}
+			assert.EqualValues(t, test.result, S)
+		})
+	}
+}
+
+func TestInverseTransformParallel(t *testing.T) {
+	type args struct { // Структура для описания аргументов функции InverseTransform
+		values      []complex128
+		threadCount int
+	}
+
+	table := []struct {
+		name    string    // Наименование теста
+		args    args      // Аргумент функции
+		result  []float64 // Ожидаемый результат
+		isError bool      // Должна ли появиться ошибка
+	}{
+		{
+			name:    "Zero length",
+			args:    args{values: []complex128{}, threadCount: 2},
+			result:  nil,
+			isError: true,
+		},
+		{
+			name:    "Zero threads",
+			args:    args{values: []complex128{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 0},
+			result:  nil,
+			isError: true,
+		},
+		{
+			name: "Normal relation N/threads",
+			args: args{
+				values: []complex128{
+					(45 + 0i),
+					(-5.0000000000000036 + 15.388417685876266i),
+					(-5.000000000000002 + 6.881909602355868i),
+					(-5.000000000000003 + 3.6327126400268i),
+					(-5.000000000000002 + 1.6245984811645275i),
+					(-5 - 5.510910596163082e-15i),
+					(-4.999999999999998 - 1.6245984811645382i),
+					(-5.000000000000038 - 3.6327126400267824i),
+					(-4.999999999999987 - 6.881909602355874i),
+					(-4.999999999999973 - 15.388417685876234i),
+				},
+				threadCount: 2,
+			},
+			result: []float64{
+				-2.6645352591003756e-16,
+				1.0000000000000069,
+				2.000000000000005,
+				2.9999999999999973,
+				4.000000000000003,
+				5.000000000000004,
+				5.999999999999993,
+				6.999999999999995,
+				8,
+				8.999999999999991,
+			},
+			isError: false,
+		},
+		{
+			name: "Too many threads",
+			args: args{
+				values: []complex128{
+					(45 + 0i),
+					(-5.0000000000000036 + 15.388417685876266i),
+					(-5.000000000000002 + 6.881909602355868i),
+					(-5.000000000000003 + 3.6327126400268i),
+					(-5.000000000000002 + 1.6245984811645275i),
+					(-5 - 5.510910596163082e-15i),
+					(-4.999999999999998 - 1.6245984811645382i),
+					(-5.000000000000038 - 3.6327126400267824i),
+					(-4.999999999999987 - 6.881909602355874i),
+					(-4.999999999999973 - 15.388417685876234i),
+				},
+				threadCount: 16,
+			},
+			result: []float64{
+				-2.6645352591003756e-16,
+				1.0000000000000069,
+				2.000000000000005,
+				2.9999999999999973,
+				4.000000000000003,
+				5.000000000000004,
+				5.999999999999993,
+				6.999999999999995,
+				8,
+				8.999999999999991,
+			},
+			isError: false,
+		},
+		{
+			name: "Irrational relation N/threads",
+			args: args{
+				values: []complex128{
+					(45 + 0i),
+					(-5.0000000000000036 + 15.388417685876266i),
+					(-5.000000000000002 + 6.881909602355868i),
+					(-5.000000000000003 + 3.6327126400268i),
+					(-5.000000000000002 + 1.6245984811645275i),
+					(-5 - 5.510910596163082e-15i),
+					(-4.999999999999998 - 1.6245984811645382i),
+					(-5.000000000000038 - 3.6327126400267824i),
+					(-4.999999999999987 - 6.881909602355874i),
+					(-4.999999999999973 - 15.388417685876234i),
+				},
+				threadCount: 3,
+			},
+			result: []float64{
+				-2.6645352591003756e-16,
+				1.0000000000000069,
+				2.000000000000005,
+				2.9999999999999973,
+				4.000000000000003,
+				5.000000000000004,
+				5.999999999999993,
+				6.999999999999995,
+				8,
+				8.999999999999991,
+			},
+			isError: false,
+		},
+	}
+
+	for _, test := range table {
+		t.Run(test.name, func(t *testing.T) {
+			sInv, err := InverseTransformParallel(&test.args.values, test.args.threadCount)
+			if (err != nil) != test.isError {
+				t.Errorf("fourier.DirectTransform(): error received = %v, expected = %v", err, test.isError)
+			}
+			assert.EqualValues(t, test.result, sInv)
+		})
+	}
 }

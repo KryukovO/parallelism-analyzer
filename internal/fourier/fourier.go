@@ -15,7 +15,6 @@ func DirectTransform(values *[]float64, borders ...int) (result []complex128, er
 	}()
 
 	N := len(*values)
-
 	if N == 0 {
 		return nil, errors.New("набор значений пуст")
 	}
@@ -55,7 +54,6 @@ func InverseTransform(values *[]complex128, borders ...int) (result []float64, e
 	}()
 
 	N := len(*values)
-
 	if N == 0 {
 		return nil, errors.New("набор значений пуст")
 	}

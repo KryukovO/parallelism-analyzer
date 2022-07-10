@@ -31,7 +31,11 @@ func DirectTransformParallel(values *[]float64, threadCount int) (result []compl
 		return nil, errors.New("число потоков, должно быть больше 0")
 	}
 
-	N := len(*values)              // Число элементов в наборе значений
+	N := len(*values) // Число элементов в наборе значений
+	if N == 0 {
+		return nil, errors.New("набор значений пуст")
+	}
+
 	result = make([]complex128, 0) // Инициализация слайса с результатом работы функции
 
 	step := int(math.Max(math.Ceil(float64(N)/float64(threadCount)), 1)) // Минимальный интревал, обрабатываемый горутиной - 1
@@ -81,7 +85,11 @@ func InverseTransformParallel(values *[]complex128, threadCount int) (result []f
 		return nil, errors.New("число потоков, должно быть больше 0")
 	}
 
-	N := len(*values)           // Число элементов в наборе значений
+	N := len(*values) // Число элементов в наборе значений
+	if N == 0 {
+		return nil, errors.New("набор значений пуст")
+	}
+
 	result = make([]float64, 0) // Инициализация слайса с результатом работы функции
 
 	step := int(math.Max(math.Ceil(float64(N)/float64(threadCount)), 1)) // Минимальный интревал, обрабатываемый горутиной - 1
