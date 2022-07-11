@@ -36,12 +36,12 @@ func DirectTransformParallel(values *[]float64, threadCount int) (result []compl
 		return nil, errors.New("набор значений пуст")
 	}
 
-	result = make([]complex128, 0) // Инициализация слайса с результатом работы функции
+	result = make([]complex128, 0, N) // Инициализация слайса с результатом работы функции
 
 	step := int(math.Max(math.Ceil(float64(N)/float64(threadCount)), 1)) // Минимальный интревал, обрабатываемый горутиной - 1
 
-	channels := make([]chan directRetValues, 0) // Слайс каналов для получения результатов рассчета от горутин
-	defer func() {                              // Отложенная функция освобождения каналов (чтобы горутины могли завершиться при возникновении ошибок)
+	channels := make([]chan directRetValues, 0, threadCount) // Слайс каналов для получения результатов рассчета от горутин
+	defer func() {                                           // Отложенная функция освобождения каналов (чтобы горутины могли завершиться, если все еще заблокированы записью)
 		for _, channel := range channels {
 			<-channel
 		}
@@ -90,12 +90,12 @@ func InverseTransformParallel(values *[]complex128, threadCount int) (result []f
 		return nil, errors.New("набор значений пуст")
 	}
 
-	result = make([]float64, 0) // Инициализация слайса с результатом работы функции
+	result = make([]float64, 0, N) // Инициализация слайса с результатом работы функции
 
 	step := int(math.Max(math.Ceil(float64(N)/float64(threadCount)), 1)) // Минимальный интревал, обрабатываемый горутиной - 1
 
-	channels := make([]chan inverseRetValues, 0) // Слайс каналов для получения результатов рассчета от горутин
-	defer func() {                               // Отложенная функция освобождения каналов (чтобы горутины могли завершиться при возникновении ошибок)
+	channels := make([]chan inverseRetValues, 0, threadCount) // Слайс каналов для получения результатов рассчета от горутин
+	defer func() {                                            // Отложенная функция освобождения каналов (чтобы горутины могли завершиться при возникновении ошибок)
 		for _, channel := range channels {
 			<-channel
 		}

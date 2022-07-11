@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fourier: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">/mnt/d/GoDir/parallelism-analyzer/internal/algorithms/fourier/fourier.go (90.7%)</option>
+				
+				<option value="file1">/mnt/d/GoDir/parallelism-analyzer/internal/algorithms/fourier/fourier_parallel.go (90.3%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package fourier
+
+import (
+        "errors"
+        "fmt"
+        "math"
+)
+
+func DirectTransform(values *[]float64, borders ...int) (result []complex128, errF error) <span class="cov8" title="1">{
+        defer func() </span><span class="cov8" title="1">{
+                if msg := recover(); msg != nil </span><span class="cov0" title="0">{
+                        result = nil
+                        errF = fmt.Errorf("%v", msg)
+                }</span>
+        }()
+
+        <span class="cov8" title="1">N := len(*values)
+        if N == 0 </span><span class="cov8" title="1">{
+                return nil, errors.New("набор значений пуст")
+        }</span>
+
+        <span class="cov8" title="1">left := 0
+        right := N
+
+        if len(borders) != 0 </span><span class="cov8" title="1">{
+                if len(borders) != 2 </span><span class="cov8" title="1">{
+                        return nil, fmt.Errorf("границы должны быть указаны двумя значениями, получено: %v", len(borders))
+                }</span>
+                <span class="cov8" title="1">if borders[0] &gt;= N || borders[0] &lt; 0 || borders[1] &gt; N || borders[1] &lt; 0 || borders[0] &gt; borders[1] </span><span class="cov8" title="1">{
+                        return nil, fmt.Errorf("границы за пределами размерности набора значений (%v): от %v до %v", N, borders[0], borders[1]-1)
+                }</span>
+
+                <span class="cov8" title="1">left = borders[0]
+                right = borders[1]</span>
+        }
+
+        <span class="cov8" title="1">result = make([]complex128, right-left)
+
+        for k := left; k &lt; right; k++ </span><span class="cov8" title="1">{
+                for n, val := range *values </span><span class="cov8" title="1">{
+                        result[k-left] += complex(val, 0) * complex(math.Cos((2.0*math.Pi*float64(k*n))/float64(N)), -math.Sin((2.0*math.Pi*float64(k*n))/float64(N)))
+                }</span>
+        }
+
+        <span class="cov8" title="1">return result, nil</span>
+}
+
+func InverseTransform(values *[]complex128, borders ...int) (result []float64, errF error) <span class="cov8" title="1">{
+        defer func() </span><span class="cov8" title="1">{
+                if msg := recover(); msg != nil </span><span class="cov0" title="0">{
+                        result = nil
+                        errF = fmt.Errorf("%v", msg)
+                }</span>
+        }()
+
+        <span class="cov8" title="1">N := len(*values)
+        if N == 0 </span><span class="cov8" title="1">{
+                return nil, errors.New("набор значений пуст")
+        }</span>
+
+        <span class="cov8" title="1">left := 0
+        right := N
+
+        if len(borders) != 0 </span><span class="cov8" title="1">{
+                if len(borders) != 2 </span><span class="cov8" title="1">{
+                        return nil, fmt.Errorf("границы должны быть указаны двумя значениями, получено: %v", len(borders))
+                }</span>
+                <span class="cov8" title="1">if borders[0] &gt;= N || borders[0] &lt; 0 || borders[1] &gt; N || borders[1] &lt;= 0 </span><span class="cov8" title="1">{
+                        return nil, fmt.Errorf("границы за пределами размерности набора значений (%v): от %v до %v", N, borders[0], borders[1]-1)
+                }</span>
+
+                <span class="cov8" title="1">left = borders[0]
+                right = borders[1]</span>
+        }
+
+        <span class="cov8" title="1">result = make([]float64, right-left)
+
+        for n := left; n &lt; right; n++ </span><span class="cov8" title="1">{
+                for k, value := range *values </span><span class="cov8" title="1">{
+                        result[n-left] += real(value * complex(math.Cos(2*math.Pi*float64(n*k)/float64(N)), math.Sin(2*math.Pi*float64(n*k)/float64(N))))
+                }</span>
+                <span class="cov8" title="1">result[n-left] /= float64(N)</span>
+        }
+
+        <span class="cov8" title="1">return result, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package fourier
+
+import (
+        "errors"
+        "fmt"
+        "math"
+)
+
+// Cтруктура для передачи результата рассчета прямого ДПФ по каналу
+type directRetValues struct {
+        result *[]complex128
+        err    *error
+}
+
+// Cтруктура для передачи результата рассчета обратного ДПФ по каналу
+type inverseRetValues struct {
+        result *[]float64
+        err    *error
+}
+
+// Оболочка для параллельного выполнения рассчета прямого ДПФ
+func DirectTransformParallel(values *[]float64, threadCount int) (result []complex128, errF error) <span class="cov8" title="1">{
+        defer func() </span><span class="cov8" title="1">{ // Функция отлова непредвиденной паники
+                if msg := recover(); msg != nil </span><span class="cov0" title="0">{
+                        result = nil
+                        errF = fmt.Errorf("%v", msg)
+                }</span>
+        }()
+
+        <span class="cov8" title="1">if threadCount == 0 </span><span class="cov8" title="1">{
+                return nil, errors.New("число потоков, должно быть больше 0")
+        }</span>
+
+        <span class="cov8" title="1">N := len(*values) // Число элементов в наборе значений
+        if N == 0 </span><span class="cov8" title="1">{
+                return nil, errors.New("набор значений пуст")
+        }</span>
+
+        <span class="cov8" title="1">result = make([]complex128, 0, N) // Инициализация слайса с результатом работы функции
+
+        step := int(math.Max(math.Ceil(float64(N)/float64(threadCount)), 1)) // Минимальный интревал, обрабатываемый горутиной - 1
+
+        channels := make([]chan directRetValues, 0, threadCount) // Слайс каналов для получения результатов рассчета от горутин
+        defer func() </span><span class="cov8" title="1">{                                           // Отложенная функция освобождения каналов (чтобы горутины могли завершиться, если все еще заблокированы записью)
+                for _, channel := range channels </span><span class="cov8" title="1">{
+                        &lt;-channel
+                }</span>
+        }()
+
+        <span class="cov8" title="1">for i := 0; i &lt; threadCount; i++ </span><span class="cov8" title="1">{
+                left := i * step // Левая граница рассчета для горутины
+                if left &lt; N </span><span class="cov8" title="1">{    // Рассчет выполняется, только если хватает значений, иначе горутина не нужна
+                        channel := make(chan directRetValues)                  // Создаем канал взаимодействия
+                        channels = append(channels, channel)                   // Помещаем канал в слайс
+                        right := int(math.Min(float64(left+step), float64(N))) // Вычисляем правую границу (она не может быть больше числа значений)
+                        go func() </span><span class="cov8" title="1">{                                            // Запуск горутины
+                                S, err := DirectTransform(values, left, right) // Рассчет прямого ДПФ для заданных границ
+                                channel &lt;- directRetValues{&amp;S, &amp;err}           // Передача результатов в канал взаимодействия
+                                close(channel)                                 // Закрытие канала
+                        }</span>()
+                }
+        }
+
+        <span class="cov8" title="1">for _, channel := range channels </span><span class="cov8" title="1">{
+                goResult := &lt;-channel     // Читаем содержимое канала (канал в любом случае будет открыт, так что проверка не нужна)
+                if *goResult.err != nil </span><span class="cov0" title="0">{ // Если была получена ошибка, то завершаем работу (каналы будут освобождены в отложенной функции)
+                        return nil, *goResult.err
+                }</span>
+                <span class="cov8" title="1">result = append(result, *goResult.result...)</span> // Добавляем результаты прямого ДПФ в результируйщий слайт
+        }
+
+        <span class="cov8" title="1">return result, nil</span>
+}
+
+// Оболочка для параллельного выполнения рассчета обратного ДПФ
+func InverseTransformParallel(values *[]complex128, threadCount int) (result []float64, errF error) <span class="cov8" title="1">{
+        defer func() </span><span class="cov8" title="1">{ // Функция отлова непредвиденной паники
+                if msg := recover(); msg != nil </span><span class="cov0" title="0">{
+                        result = nil
+                        errF = fmt.Errorf("%v", msg)
+                }</span>
+        }()
+
+        <span class="cov8" title="1">if threadCount == 0 </span><span class="cov8" title="1">{
+                return nil, errors.New("число потоков, должно быть больше 0")
+        }</span>
+
+        <span class="cov8" title="1">N := len(*values) // Число элементов в наборе значений
+        if N == 0 </span><span class="cov8" title="1">{
+                return nil, errors.New("набор значений пуст")
+        }</span>
+
+        <span class="cov8" title="1">result = make([]float64, 0, N) // Инициализация слайса с результатом работы функции
+
+        step := int(math.Max(math.Ceil(float64(N)/float64(threadCount)), 1)) // Минимальный интревал, обрабатываемый горутиной - 1
+
+        channels := make([]chan inverseRetValues, 0, threadCount) // Слайс каналов для получения результатов рассчета от горутин
+        defer func() </span><span class="cov8" title="1">{                                            // Отложенная функция освобождения каналов (чтобы горутины могли завершиться при возникновении ошибок)
+                for _, channel := range channels </span><span class="cov8" title="1">{
+                        &lt;-channel
+                }</span>
+        }()
+
+        <span class="cov8" title="1">for i := 0; i &lt; threadCount; i++ </span><span class="cov8" title="1">{
+
+                left := i * step // Левая граница рассчета для горутины
+                if left &lt; N </span><span class="cov8" title="1">{    // Рассчет выполняется, только если хватает значений, иначе горутина не нужна
+                        channel := make(chan inverseRetValues)                 // Создаем канал взаимодействия
+                        channels = append(channels, channel)                   // Помещаем канал в слайс
+                        right := int(math.Min(float64(left+step), float64(N))) // Вычисляем правую границу (она не может быть больше числа значений)
+                        go func() </span><span class="cov8" title="1">{                                            // Запуск горутины
+                                s, err := InverseTransform(values, left, right) // Ррассчет обратного ДПФ для заданных границ
+                                channel &lt;- inverseRetValues{&amp;s, &amp;err}           // Передача результатов в канал взаимодействия
+                                close(channel)                                  // Закрытие канала
+                        }</span>()
+                }
+        }
+
+        <span class="cov8" title="1">for _, channel := range channels </span><span class="cov8" title="1">{
+                goResult := &lt;-channel     // Читаем содержимое канала (канал в любом случае будет открыт, так что проверка не нужна)
+                if *goResult.err != nil </span><span class="cov0" title="0">{ // Если была получена ошибка, то завершаем работу (каналы будут освобождены в отложенной функции)
+                        return nil, *goResult.err
+                }</span>
+                <span class="cov8" title="1">result = append(result, *goResult.result...)</span> // Добавляем результаты обратного ДПФ в результируйщий слайт
+        }
+
+        <span class="cov8" title="1">return result, nil</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

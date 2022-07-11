@@ -1,12 +1,13 @@
 package analyzer
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 )
 
-func TestAnalyze(t *testing.T) {
-	_, err := Analyze(
+func TestAnalyzeOne(t *testing.T) {
+	_, err := analyzeOne(
 		func(i int) error {
 			func(threads int) {
 				for j := 1; j < threads; j++ {
@@ -21,5 +22,62 @@ func TestAnalyze(t *testing.T) {
 
 	if err != nil {
 		t.Errorf("Something went wrong: %v", err)
+	}
+}
+
+func TestAnalyzeOneError(t *testing.T) {
+	_, err := analyzeOne(
+		func(i int) error {
+			return func(threads int) error {
+				for j := 1; j < threads; j++ {
+					num := j
+					go func() { fmt.Println(num) }()
+				}
+				return errors.New("some error")
+			}(i)
+		},
+		2,
+	)
+
+	if err == nil {
+		t.Errorf("Error expected")
+	}
+}
+
+func TestAnalyze(t *testing.T) {
+	_, err := Analyze(
+		func(i int) error {
+			func(threads int) {
+				for j := 1; j < threads; j++ {
+					num := j
+					go func() { fmt.Println(num) }()
+				}
+			}(i)
+			return nil
+		},
+		[]int{2, 4, 8},
+	)
+
+	if err != nil {
+		t.Errorf("Something went wrong: %v", err)
+	}
+}
+
+func TestAnalyzeError(t *testing.T) {
+	_, err := Analyze(
+		func(i int) error {
+			return func(threads int) error {
+				for j := 1; j < threads; j++ {
+					num := j
+					go func() { fmt.Println(num) }()
+				}
+				return errors.New("some error")
+			}(i)
+		},
+		[]int{2, 4, 8},
+	)
+
+	if err == nil {
+		t.Errorf("Error expected")
 	}
 }

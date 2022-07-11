@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"parallelism-analyzer/internal/algorithms/fourier"
 	"parallelism-analyzer/pkg/analyzer"
+	"sort"
 )
 
 func main() {
@@ -30,39 +31,24 @@ func main() {
 		test[i] = rand.Float64() * float64(rand.Intn(1000000))
 	}
 
-	for threads := 1; threads <= 16; threads *= 2 {
-		dur, err := analyzer.Analyze(
-			func(threadCount int) error {
-				_, err := fourier.DirectTransformParallel(&test, threadCount)
-				return err
-			},
-			threads,
-		)
+	anl, err := analyzer.Analyze(
+		func(threadCount int) error {
+			_, err := fourier.DirectTransformParallel(&test, threadCount)
+			return err
+		},
+		[]int{1, 2, 4, 8, 16},
+	)
 
-		if err != nil {
-			fmt.Printf("Ошибка (%v): %v\n", threads, err)
-		} else {
-			fmt.Printf("Длительность (%v): %v\n", threads, dur.String())
+	if err != nil {
+		fmt.Printf("Ошибка: %v\n", err)
+	} else {
+		keys := make([]int, 0, len(anl))
+		for k := range anl {
+			keys = append(keys, k)
 		}
-	}
-
-	testCompl := make([]complex128, 16384)
-	for i := 0; i < len(testCompl); i++ {
-		testCompl[i] = complex(rand.Float64()*float64(rand.Intn(1000000)), 0)
-	}
-
-	for threads := 1; threads <= 16; threads *= 2 {
-		dur, err := analyzer.Analyze(
-			func(threadCount int) error {
-				_, err := fourier.InverseTransformParallel(&testCompl, threadCount)
-				return err
-			},
-			threads,
-		)
-
-		if err != nil {
-			fmt.Printf("Ошибка (%v): %v\n", threads, err)
-		} else {
+		sort.Ints(keys)
+		for _, threads := range keys {
+			dur := anl[threads]
 			fmt.Printf("Длительность (%v): %v\n", threads, dur.String())
 		}
 	}
