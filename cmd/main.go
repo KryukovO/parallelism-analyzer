@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"parallelism-analyzer/internal/algorithms/fourier"
-	"parallelism-analyzer/internal/analyzer"
+	"parallelism-analyzer/pkg/analyzer"
 )
 
 func main() {
