@@ -6,6 +6,7 @@ import (
 	"math"
 )
 
+// Функция реализующая прямое дискретное преобразование Фурье (ДПФ)
 func DirectTransform(values *[]float64, borders ...int) (result []complex128, errF error) {
 	defer func() {
 		if msg := recover(); msg != nil {
@@ -45,6 +46,7 @@ func DirectTransform(values *[]float64, borders ...int) (result []complex128, er
 	return result, nil
 }
 
+// Функция реализующая обратное дискретное преобразование Фурье (ДПФ)
 func InverseTransform(values *[]complex128, borders ...int) (result []float64, errF error) {
 	defer func() {
 		if msg := recover(); msg != nil {

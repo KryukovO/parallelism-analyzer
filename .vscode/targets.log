@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 11 19:44:15 2022
+# Make data base, printed on Tue Jul 12 21:13:33 2022
 
 # Variables
 
@@ -29,7 +29,7 @@ CURDIR := /mnt/d/GoDir/parallelism-analyzer
 # makefile
 SHELL = /bin/sh
 # environment
-VSCODE_NLS_CONFIG = {"locale":"ru","availableLanguages":{"*":"ru"},"_languagePackId":"0c710195abefcb157427091a54303bfc.ru","_translationsConfigFile":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru/tcf.json","_cacheRoot":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru","_resolvedLanguagePackCoreLocation":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru/92d25e35d9bf1a6b16f7d0758f25d48ace11e5b9","_corruptedFile":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru/corrupted.info","_languagePackSupport":true}
+VSCODE_NLS_CONFIG = {"locale":"ru","availableLanguages":{"*":"ru"},"_languagePackId":"0c710195abefcb157427091a54303bfc.ru","_translationsConfigFile":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru/tcf.json","_cacheRoot":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru","_resolvedLanguagePackCoreLocation":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru/b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a","_corruptedFile":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru/corrupted.info","_languagePackSupport":true}
 # environment
 _ = /mnt/c/Users/apost/AppData/Local/Programs/Microsoft VS Code/bin/code
 # makefile (from 'Makefile', line 1)
@@ -49,7 +49,7 @@ GOPROXY = https://proxy.golang.org,direct
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/oleg/.vscode-server/bin/92d25e35d9bf1a6b16f7d0758f25d48ace11e5b9/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/WindowsApps/CanonicalGroupLimited.UbuntuonWindows_2004.2022.1.0_x64__79rhkp1fndgsc:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Python38/Scripts/:/mnt/c/Python38/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/NetSarang/Xshell 7/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/apost/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/apost/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/apost/.dotnet/tools:/mnt/c/SparkBin/apache-maven-3.6.3/bin:/mnt/c/SparkBin/spark-2.4.5-bin-hadoop2.7/bin:/mnt/c/Users/apost/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/apost/AppData/Roaming/npm:/mnt/c/Users/apost/.dotnet/tools:/snap/bin:/home/oleg/go/bin:/home/oleg/go/bin:/usr/local/go/bin
+PATH = /home/oleg/.vscode-server/bin/b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/WindowsApps/CanonicalGroupLimited.UbuntuonWindows_2004.2022.1.0_x64__79rhkp1fndgsc:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Python38/Scripts/:/mnt/c/Python38/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/NetSarang/Xshell 7/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/apost/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/apost/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/apost/.dotnet/tools:/mnt/c/SparkBin/apache-maven-3.6.3/bin:/mnt/c/SparkBin/spark-2.4.5-bin-hadoop2.7/bin:/mnt/c/Users/apost/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/apost/AppData/Roaming/npm:/mnt/c/Users/apost/.dotnet/tools:/snap/bin:/home/oleg/go/bin:/home/oleg/go/bin:/usr/local/go/bin
 # environment
 GOPATH = /home/oleg/go
 # environment
@@ -63,7 +63,7 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 # environment
 PWD = /mnt/d/GoDir/parallelism-analyzer
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-166a52e5-42d2-439f-9055-79a83174d003.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-15c6099d-b4e5-4955-9b99-b1e32036d547.sock
 # environment
 GOMODCACHE = /home/oleg/go/pkg/mod
 # environment
@@ -149,9 +149,9 @@ WSL_DISTRO_NAME = Ubuntu
 
 # Directories
 
-# . (device 15, inode 1407374883803658): 12 files, no impossibilities.
+# . (device 15, inode 1407374883803658): 14 files, no impossibilities.
 
-# 12 files, no impossibilities in 1 directories.
+# 14 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -166,10 +166,28 @@ all:
 #  File does not exist.
 #  File has not been updated.
 
+tests:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 5):
+	go test internal/algorithms/fourier/fourier_test.go internal/algorithms/fourier/fourier.go internal/algorithms/fourier/fourier_parallel.go 
+	go test pkg/analyzer/analyzer_test.go pkg/analyzer/analyzer.go 
+
+testCover:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 9):
+	go test internal/algorithms/fourier/fourier_test.go internal/algorithms/fourier/fourier.go internal/algorithms/fourier/fourier_parallel.go -cover -coverprofile=test/fourier_cover.out
+	go tool cover -html=test/fourier_cover.out -o test/fourier_cover.html
+	go test pkg/analyzer/analyzer_test.go pkg/analyzer/analyzer.go -cover -coverprofile=test/analyzer_cover.out
+	go tool cover -html=test/analyzer_cover.out -o test/analyzer_cover.html
+
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-11 19:44:14.2172916
+#  Last modified 2022-07-11 22:50:26.2910794
 #  File has been updated.
 #  Successfully updated.
 
@@ -183,22 +201,24 @@ run:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+#  recipe to execute (from 'Makefile', line 2):
+	go run cmd/main.go
 
 # files hash-table stats:
-# Load=5/1024=0%, Rehash=0, Collisions=0/15=0%
+# Load=7/1024=1%, Rehash=0, Collisions=0/17=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 18 / storage = 141 B / avg = 7 B
-# current buf: size = 8162 B / used = 141 B / count = 18 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 22 / storage = 166 B / avg = 7 B
+# current buf: size = 8162 B / used = 166 B / count = 22 / avg = 7 B
 
-# strcache performance: lookups = 23 / hit rate = 21%
+# strcache performance: lookups = 29 / hit rate = 24%
 # hash-table stats:
-# Load=18/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Mon Jul 11 19:44:15 2022
+# Load=22/8192=0%, Rehash=0, Collisions=1/29=3%
+# Finished Make data base on Tue Jul 12 21:13:33 2022
 
  
 make: *** No rule to make target 'all'.  Stop.

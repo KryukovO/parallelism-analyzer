@@ -1,5 +1,5 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/mnt/d/GoDir/parallelism-analyzer'
-make: Nothing to be done for 'run'.
+go run cmd/main.go
 make: Leaving directory '/mnt/d/GoDir/parallelism-analyzer'
  
