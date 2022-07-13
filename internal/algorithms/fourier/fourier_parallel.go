@@ -27,8 +27,8 @@ func DirectTransformParallel(values *[]float64, threadCount int) (result []compl
 		}
 	}()
 
-	if threadCount == 0 {
-		return nil, errors.New("число потоков, должно быть больше 0")
+	if threadCount < 1 {
+		return nil, errors.New("число потоков должно быть больше 0")
 	}
 
 	N := len(*values) // Число элементов в наборе значений
@@ -81,8 +81,8 @@ func InverseTransformParallel(values *[]complex128, threadCount int) (result []f
 		}
 	}()
 
-	if threadCount == 0 {
-		return nil, errors.New("число потоков, должно быть больше 0")
+	if threadCount < 1 {
+		return nil, errors.New("число потоков должно быть больше 0")
 	}
 
 	N := len(*values) // Число элементов в наборе значений

@@ -11,14 +11,12 @@ import (
 	"os"
 )
 
-// Рекомендуемые матрицы размытия
 var (
-	m2 = [][]int{{0, 2}, {3, 1}}
-	m3 = [][]int{{0, 7, 3}, {6, 5, 2}, {4, 1, 8}}
+	m2 = [][]int{{0, 2}, {3, 1}} // Минимальная матрица размытия
 )
 
 // Функция рассчета матриц размытия больших размеров
-func ditheringMatrix(n int) (result [][]int, errF error) {
+func ditheringMatrix(order int) (result [][]int, errF error) {
 	defer func() {
 		if msg := recover(); msg != nil {
 			result = nil
@@ -27,40 +25,40 @@ func ditheringMatrix(n int) (result [][]int, errF error) {
 	}()
 
 	switch {
-	case n <= 1:
+	case order <= 1:
 		return nil, errors.New("размерность матрицы размытия должна быть больше 1")
-	case n == 2:
+	case order == 2:
 		return m2, nil
-	case n == 3:
-		return m3, nil
+	case order%2 != 0:
+		return nil, errors.New("порядок матрицы размытия должен быть степенью двойки")
 	}
 
-	result = make([][]int, n)
-	for i := 0; i < n; i++ {
-		result[i] = make([]int, n)
+	result = make([][]int, order)
+	for i := 0; i < order; i++ {
+		result[i] = make([]int, order)
 	}
 
-	parentD, err := ditheringMatrix(n / 2)
+	parentD, err := ditheringMatrix(order / 2)
 	if err != nil {
 		return nil, err
 	}
 
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
+	for i := 0; i < order; i++ {
+		for j := 0; j < order; j++ {
 			switch {
-			case i < n/2:
+			case i < order/2:
 				switch {
-				case j < n/2:
+				case j < order/2:
 					result[i][j] = 4 * parentD[i][j]
-				case j >= n/2:
-					result[i][j] = 4*parentD[i][j-n/2] + 2
+				case j >= order/2:
+					result[i][j] = 4*parentD[i][j-order/2] + 2
 				}
-			case i >= n/2:
+			case i >= order/2:
 				switch {
-				case j < n/2:
-					result[i][j] = 4*parentD[i-n/2][j] + 3
-				case j >= n/2:
-					result[i][j] = 4*parentD[i-n/2][j-n/2] + 1
+				case j < order/2:
+					result[i][j] = 4*parentD[i-order/2][j] + 3
+				case j >= order/2:
+					result[i][j] = 4*parentD[i-order/2][j-order/2] + 1
 				}
 			}
 		}
