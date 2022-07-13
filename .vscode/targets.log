@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jul 12 21:13:33 2022
+# Make data base, printed on Wed Jul 13 20:04:59 2022
 
 # Variables
 
@@ -63,7 +63,7 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 # environment
 PWD = /mnt/d/GoDir/parallelism-analyzer
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-15c6099d-b4e5-4955-9b99-b1e32036d547.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-1bace10f-7c29-483b-bfb0-a5f8a4afacf0.sock
 # environment
 GOMODCACHE = /home/oleg/go/pkg/mod
 # environment
@@ -218,7 +218,7 @@ run:
 # strcache performance: lookups = 29 / hit rate = 24%
 # hash-table stats:
 # Load=22/8192=0%, Rehash=0, Collisions=1/29=3%
-# Finished Make data base on Tue Jul 12 21:13:33 2022
+# Finished Make data base on Wed Jul 13 20:04:59 2022
 
  
 make: *** No rule to make target 'all'.  Stop.

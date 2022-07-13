@@ -47,9 +47,9 @@ func main() {
 	// 	}
 	// }
 
-	dithering.OrderedDithering("assets/tiger.png", "assets/tiger_ord_dith_2.png", 2)
-	dithering.OrderedDithering("assets/tiger.png", "assets/tiger_ord_dith_4.png", 4)
-	dithering.OrderedDithering("assets/tiger.png", "assets/tiger_ord_dith_8.png", 8)
-	dithering.OrderedDithering("assets/tiger.png", "assets/tiger_ord_dith_16.png", 16)
-	dithering.OrderedDithering("assets/tiger.png", "assets/tiger_ord_dith_32.png", 32)
+	dithering.OrderedDithering("assets/tiger.png", "results/tiger_ord_dith_2.png", 2)
+	dithering.OrderedDithering("assets/tiger.png", "results/tiger_ord_dith_4.png", 4)
+	dithering.OrderedDithering("assets/tiger.png", "results/tiger_ord_dith_8.png", 8)
+	dithering.OrderedDithering("assets/tiger.png", "results/tiger_ord_dith_16.png", 16)
+	dithering.OrderedDithering("assets/tiger.png", "results/tiger_ord_dith_32.png", 32)
 }

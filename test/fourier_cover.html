@@ -79,6 +79,7 @@ import (
         "math"
 )
 
+// Функция реализующая прямое дискретное преобразование Фурье (ДПФ)
 func DirectTransform(values *[]float64, borders ...int) (result []complex128, errF error) <span class="cov8" title="1">{
         defer func() </span><span class="cov8" title="1">{
                 if msg := recover(); msg != nil </span><span class="cov0" title="0">{
@@ -118,6 +119,7 @@ func DirectTransform(values *[]float64, borders ...int) (result []complex128, er
         <span class="cov8" title="1">return result, nil</span>
 }
 
+// Функция реализующая обратное дискретное преобразование Фурье (ДПФ)
 func InverseTransform(values *[]complex128, borders ...int) (result []float64, errF error) <span class="cov8" title="1">{
         defer func() </span><span class="cov8" title="1">{
                 if msg := recover(); msg != nil </span><span class="cov0" title="0">{
