@@ -20,49 +20,49 @@ func TestDirectTransform(t *testing.T) {
 		isError bool         // Должна ли появиться ошибка
 	}{
 		{
-			name:    "Zero length",
+			name:    "fourier.DirectTransform(): Zero length",
 			args:    args{values: []float64{}, left: -1, right: -1},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Left border out of range №1",
+			name:    "fourier.DirectTransform(): Left border out of range №1",
 			args:    args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: -1, right: 10},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Left border out of range №2",
+			name:    "fourier.DirectTransform(): Left border out of range №2",
 			args:    args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: 10, right: 10},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Right border out of range №1",
+			name:    "fourier.DirectTransform(): Right border out of range №1",
 			args:    args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: 0, right: -1},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Right border out of range №2",
+			name:    "fourier.DirectTransform(): Right border out of range №2",
 			args:    args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: 0, right: 11},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Borders out of range",
+			name:    "fourier.DirectTransform(): Borders out of range",
 			args:    args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: -1, right: 11},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Left border is larger than right",
+			name:    "fourier.DirectTransform(): Left border is larger than right",
 			args:    args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: 10, right: 0},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name: "Check result",
+			name: "fourier.DirectTransform(): Check result",
 			args: args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: 0, right: 10},
 			result: []complex128{
 				(45 + 0i),
@@ -79,7 +79,7 @@ func TestDirectTransform(t *testing.T) {
 			isError: false,
 		},
 		{
-			name: "Check result with borders",
+			name: "fourier.DirectTransform(): Check result with borders",
 			args: args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: 3, right: 7},
 			result: []complex128{
 				(-5.000000000000003 + 3.6327126400268i),
@@ -95,7 +95,7 @@ func TestDirectTransform(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			S, err := DirectTransform(&test.args.values, test.args.left, test.args.right)
 			if (err != nil) != test.isError {
-				t.Errorf("fourier.DirectTransform(): error received = %v, expected = %v", err, test.isError)
+				t.Errorf("error received = %v, expected = %v", err, test.isError)
 			}
 			assert.EqualValues(t, test.result, S)
 		})
@@ -122,43 +122,43 @@ func TestInverseTransform(t *testing.T) {
 		isError bool      // Должна ли появиться ошибка
 	}{
 		{
-			name:    "Zero length",
+			name:    "fourier.DirectTransform(): Zero length",
 			args:    args{values: []complex128{}, left: -1, right: -1},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Left border out of range №1",
+			name:    "fourier.DirectTransform(): Left border out of range №1",
 			args:    args{values: []complex128{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: -1, right: 10},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Left border out of range №2",
+			name:    "fourier.DirectTransform(): Left border out of range №2",
 			args:    args{values: []complex128{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: 10, right: 10},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Right border out of range №1",
+			name:    "fourier.DirectTransform(): Right border out of range №1",
 			args:    args{values: []complex128{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: 0, right: 0},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Right border out of range №2",
+			name:    "fourier.DirectTransform(): Right border out of range №2",
 			args:    args{values: []complex128{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: 0, right: 11},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Borders out of range",
+			name:    "fourier.DirectTransform(): Borders out of range",
 			args:    args{values: []complex128{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, left: -1, right: 11},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name: "Check result",
+			name: "fourier.DirectTransform(): Check result",
 			args: args{
 				values: []complex128{
 					(45 + 0i),
@@ -190,7 +190,7 @@ func TestInverseTransform(t *testing.T) {
 			isError: false,
 		},
 		{
-			name: "Check result with borders",
+			name: "fourier.DirectTransform(): Check result with borders",
 			args: args{
 				values: []complex128{
 					(45 + 0i),
@@ -221,7 +221,7 @@ func TestInverseTransform(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			sInv, err := InverseTransform(&test.args.values, test.args.left, test.args.right)
 			if (err != nil) != test.isError {
-				t.Errorf("fourier.DirectTransform(): error received = %v, expected = %v", err, test.isError)
+				t.Errorf("error received = %v, expected = %v", err, test.isError)
 			}
 			assert.EqualValues(t, test.result, sInv)
 		})
@@ -262,19 +262,19 @@ func TestDirectTransformParallel(t *testing.T) {
 		isError bool         // Должна ли появиться ошибка
 	}{
 		{
-			name:    "Zero length",
+			name:    "fourier.DirectTransformParallel(): Zero length",
 			args:    args{values: []float64{}, threadCount: 2},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Zero threads",
+			name:    "fourier.DirectTransformParallel(): Zero threads",
 			args:    args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 0},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name: "Normal relation N/threads",
+			name: "fourier.DirectTransformParallel(): Normal relation N/threads",
 			args: args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 2},
 			result: []complex128{
 				(45 + 0i),
@@ -291,7 +291,7 @@ func TestDirectTransformParallel(t *testing.T) {
 			isError: false,
 		},
 		{
-			name: "Too many threads",
+			name: "fourier.DirectTransformParallel(): Too many threads",
 			args: args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 16},
 			result: []complex128{
 				(45 + 0i),
@@ -308,7 +308,7 @@ func TestDirectTransformParallel(t *testing.T) {
 			isError: false,
 		},
 		{
-			name: "Irrational relation N/threads",
+			name: "fourier.DirectTransformParallel(): Irrational relation N/threads",
 			args: args{values: []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 3},
 			result: []complex128{
 				(45 + 0i),
@@ -330,7 +330,7 @@ func TestDirectTransformParallel(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			S, err := DirectTransformParallel(&test.args.values, test.args.threadCount)
 			if (err != nil) != test.isError {
-				t.Errorf("fourier.DirectTransform(): error received = %v, expected = %v", err, test.isError)
+				t.Errorf("error received = %v, expected = %v", err, test.isError)
 			}
 			assert.EqualValues(t, test.result, S)
 		})
@@ -350,19 +350,19 @@ func TestInverseTransformParallel(t *testing.T) {
 		isError bool      // Должна ли появиться ошибка
 	}{
 		{
-			name:    "Zero length",
+			name:    "fourier.InverseTransformParallel(): Zero length",
 			args:    args{values: []complex128{}, threadCount: 2},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name:    "Zero threads",
+			name:    "fourier.InverseTransformParallel(): Zero threads",
 			args:    args{values: []complex128{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, threadCount: 0},
 			result:  nil,
 			isError: true,
 		},
 		{
-			name: "Normal relation N/threads",
+			name: "fourier.InverseTransformParallel(): Normal relation N/threads",
 			args: args{
 				values: []complex128{
 					(45 + 0i),
@@ -393,7 +393,7 @@ func TestInverseTransformParallel(t *testing.T) {
 			isError: false,
 		},
 		{
-			name: "Too many threads",
+			name: "fourier.InverseTransformParallel(): Too many threads",
 			args: args{
 				values: []complex128{
 					(45 + 0i),
@@ -424,7 +424,7 @@ func TestInverseTransformParallel(t *testing.T) {
 			isError: false,
 		},
 		{
-			name: "Irrational relation N/threads",
+			name: "fourier.InverseTransformParallel(): Irrational relation N/threads",
 			args: args{
 				values: []complex128{
 					(45 + 0i),
@@ -460,7 +460,7 @@ func TestInverseTransformParallel(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			sInv, err := InverseTransformParallel(&test.args.values, test.args.threadCount)
 			if (err != nil) != test.isError {
-				t.Errorf("fourier.DirectTransform(): error received = %v, expected = %v", err, test.isError)
+				t.Errorf("error received = %v, expected = %v", err, test.isError)
 			}
 			assert.EqualValues(t, test.result, sInv)
 		})

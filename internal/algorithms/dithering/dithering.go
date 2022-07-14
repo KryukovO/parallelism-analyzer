@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	_ "image/jpeg"
 	"image/png"
 	"math"
 	"os"
 )
+
+// TO DO: разобраться с расширениями файлов
 
 var (
 	m2 = [][]int{{0, 2}, {3, 1}} // Минимальная матрица размытия

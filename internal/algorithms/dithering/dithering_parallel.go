@@ -74,7 +74,10 @@ func OrderedDitheringParallel(srcImgPath string, dstImgPath string, order int, t
 
 	wg.Wait()
 
-	png.Encode(dstImgFile, dstImg)
+	err = png.Encode(dstImgFile, dstImg)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

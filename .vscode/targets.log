@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jul 13 20:04:59 2022
+# Make data base, printed on Thu Jul 14 19:39:06 2022
 
 # Variables
 
@@ -29,7 +29,7 @@ CURDIR := /mnt/d/GoDir/parallelism-analyzer
 # makefile
 SHELL = /bin/sh
 # environment
-VSCODE_NLS_CONFIG = {"locale":"ru","availableLanguages":{"*":"ru"},"_languagePackId":"0c710195abefcb157427091a54303bfc.ru","_translationsConfigFile":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru/tcf.json","_cacheRoot":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru","_resolvedLanguagePackCoreLocation":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru/b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a","_corruptedFile":"/home/oleg/.vscode-server/data/clp/0c710195abefcb157427091a54303bfc.ru/corrupted.info","_languagePackSupport":true}
+VSCODE_NLS_CONFIG = {"locale":"ru","availableLanguages":{"*":"ru"},"_languagePackId":"f1271d778ec77496b280bb178e5ed275.ru","_translationsConfigFile":"/home/oleg/.vscode-server/data/clp/f1271d778ec77496b280bb178e5ed275.ru/tcf.json","_cacheRoot":"/home/oleg/.vscode-server/data/clp/f1271d778ec77496b280bb178e5ed275.ru","_resolvedLanguagePackCoreLocation":"/home/oleg/.vscode-server/data/clp/f1271d778ec77496b280bb178e5ed275.ru/b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a","_corruptedFile":"/home/oleg/.vscode-server/data/clp/f1271d778ec77496b280bb178e5ed275.ru/corrupted.info","_languagePackSupport":true}
 # environment
 _ = /mnt/c/Users/apost/AppData/Local/Programs/Microsoft VS Code/bin/code
 # makefile (from 'Makefile', line 1)
@@ -63,7 +63,7 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 # environment
 PWD = /mnt/d/GoDir/parallelism-analyzer
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-1bace10f-7c29-483b-bfb0-a5f8a4afacf0.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-e53e973d-05e2-4c56-9c36-6bb16a33f4db.sock
 # environment
 GOMODCACHE = /home/oleg/go/pkg/mod
 # environment
@@ -149,9 +149,9 @@ WSL_DISTRO_NAME = Ubuntu
 
 # Directories
 
-# . (device 15, inode 1407374883803658): 14 files, no impossibilities.
+# . (device 15, inode 1407374883803658): 15 files, no impossibilities.
 
-# 14 files, no impossibilities in 1 directories.
+# 15 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -212,14 +212,15 @@ run:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 22 / storage = 166 B / avg = 7 B
-# current buf: size = 8162 B / used = 166 B / count = 22 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 23 / storage = 174 B / avg = 7 B
+# current buf: size = 8162 B / used = 174 B / count = 23 / avg = 7 B
 
-# strcache performance: lookups = 29 / hit rate = 24%
+# strcache performance: lookups = 30 / hit rate = 23%
 # hash-table stats:
-# Load=22/8192=0%, Rehash=0, Collisions=1/29=3%
-# Finished Make data base on Wed Jul 13 20:04:59 2022
-
  
 make: *** No rule to make target 'all'.  Stop.
 
+# Load=23/8192=0%, Rehash=0, Collisions=1/30=3%
+# Finished Make data base on Thu Jul 14 19:39:06 2022
+
+ 
