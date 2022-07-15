@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Jul 14 19:39:06 2022
+# Make data base, printed on Fri Jul 15 22:10:44 2022
 
 # Variables
 
@@ -63,7 +63,7 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 # environment
 PWD = /mnt/d/GoDir/parallelism-analyzer
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-e53e973d-05e2-4c56-9c36-6bb16a33f4db.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-ed4a0687-935c-467e-9c25-6385778581d9.sock
 # environment
 GOMODCACHE = /home/oleg/go/pkg/mod
 # environment
@@ -171,23 +171,26 @@ tests:
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 5):
-	go test internal/algorithms/fourier/fourier_test.go internal/algorithms/fourier/fourier.go internal/algorithms/fourier/fourier_parallel.go 
-	go test pkg/analyzer/analyzer_test.go pkg/analyzer/analyzer.go 
+	go test parallelism-analyzer/internal/algorithms/fourier/
+	go test parallelism-analyzer/internal/algorithms/dithering/
+	go test parallelism-analyzer/pkg/analyzer/
 
 testCover:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 9):
-	go test internal/algorithms/fourier/fourier_test.go internal/algorithms/fourier/fourier.go internal/algorithms/fourier/fourier_parallel.go -cover -coverprofile=test/fourier_cover.out
+#  recipe to execute (from 'Makefile', line 10):
+	go test parallelism-analyzer/internal/algorithms/fourier/ -cover -coverprofile=test/fourier_cover.out
 	go tool cover -html=test/fourier_cover.out -o test/fourier_cover.html
-	go test pkg/analyzer/analyzer_test.go pkg/analyzer/analyzer.go -cover -coverprofile=test/analyzer_cover.out
+	go test parallelism-analyzer/internal/algorithms/dithering/ -cover -coverprofile=test/dithering_cover.out
+	go tool cover -html=test/dithering_cover.out -o test/dithering_cover.html
+	go test parallelism-analyzer/pkg/analyzer/ -cover -coverprofile=test/analyzer_cover.out
 	go tool cover -html=test/analyzer_cover.out -o test/analyzer_cover.html
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-11 22:50:26.2910794
+#  Last modified 2022-07-14 21:08:12.9736276
 #  File has been updated.
 #  Successfully updated.
 
@@ -217,10 +220,9 @@ run:
 
 # strcache performance: lookups = 30 / hit rate = 23%
 # hash-table stats:
+# Load=23/8192=0%, Rehash=0, Collisions=1/30=3%
+# Finished Make data base on Fri Jul 15 22:10:44 2022
+
  
 make: *** No rule to make target 'all'.  Stop.
 
-# Load=23/8192=0%, Rehash=0, Collisions=1/30=3%
-# Finished Make data base on Thu Jul 14 19:39:06 2022
-
- 

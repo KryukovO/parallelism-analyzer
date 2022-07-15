@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	_ "image/jpeg"
 	"image/png"
 	"math"
 	"os"
@@ -68,6 +69,139 @@ func ditheringMatrix(order int) (result [][]int, errF error) {
 	return result, nil
 }
 
+// Функция, читающая исходный файл изображения
+func readSourceImg(srcImgPath string) (img image.Image, errF error) {
+	defer func() {
+		if msg := recover(); msg != nil {
+			img = nil
+			errF = fmt.Errorf("%v", msg)
+		}
+	}()
+
+	srcImgReader, err := os.Open(srcImgPath)
+	if err != nil {
+		return nil, err
+	}
+	defer srcImgReader.Close()
+	m, _, err := image.Decode(srcImgReader)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, nil
+}
+
+// Функция, реализующая алгоритм усечения по порогу
+func ThresholdDithering(srcImgPath string, dstImgPath string, threshold int) (errF error) {
+	defer func() {
+		if msg := recover(); msg != nil {
+			errF = fmt.Errorf("%v", msg)
+		}
+	}()
+
+	srcImg, err := readSourceImg(srcImgPath)
+	if err != nil {
+		return err
+	}
+	bounds := srcImg.Bounds()
+
+	dstImg := image.NewRGBA(bounds)
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			r, g, b, a := srcImg.At(x, y).RGBA()
+			intens := int(math.Max(float64(r/256), math.Max(float64(g/256), float64(b/256))))
+			if intens > threshold {
+				dstImg.Set(x, y, color.RGBA{255, 255, 255, uint8(a / 256)})
+			} else {
+				dstImg.Set(x, y, color.RGBA{0, 0, 0, uint8(a / 256)})
+			}
+		}
+	}
+
+	dstImgFile, err := os.Create(dstImgPath)
+	if err != nil {
+		return err
+	}
+
+	err = png.Encode(dstImgFile, dstImg)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Функция, реализующая алгоритм рассеивания ошибок Флойда-Стейнберга
+func FloydErrDithering(srcImgPath string, dstImgPath string, threshold int) (errF error) {
+	defer func() {
+		if msg := recover(); msg != nil {
+			errF = fmt.Errorf("%v", msg)
+		}
+	}()
+
+	srcImg, err := readSourceImg(srcImgPath)
+	if err != nil {
+		return err
+	}
+	bounds := srcImg.Bounds()
+
+	intensMatrix := make([][]uint8, bounds.Max.Y-bounds.Min.Y) // Двумерный слайс для хранения рассчитываемой интенсивности пикселей нового изображения
+	for y := 0; y < bounds.Max.Y-bounds.Min.Y; y++ {
+		intensMatrix[y] = make([]uint8, bounds.Max.X-bounds.Min.X)
+		for x := 0; x < bounds.Max.X-bounds.Min.X; x++ {
+			r, g, b, _ := srcImg.At(x, y).RGBA()
+			intensMatrix[y][x] = uint8(math.Max(float64(r/256), math.Max(float64(g/256), float64(b/256))))
+		}
+	}
+
+	for y := 0; y < bounds.Max.Y-bounds.Min.Y; y++ {
+		for x := 0; x < bounds.Max.X-bounds.Min.X; x++ {
+			intens := intensMatrix[y][x] // запоминаем интенсивность
+			errPix := 0                  // распространяемая ошибка
+			if intens > uint8(threshold) {
+				intensMatrix[y][x] = 255
+				errPix = int(intens) - 255
+			} else {
+				intensMatrix[y][x] = 0
+				errPix = int(intens)
+			}
+
+			// Распространяем ошибку на пиксель справа
+			intensMatrix[y][x] = uint8(math.Min(math.Max(float64(intensMatrix[y][x])+7.0/16.0*float64(errPix), 0), 255)) // 0 <= интенсивность <= 255
+
+			// Распространяем ошибку на пиксель справа снизу
+			intensMatrix[y][x] = uint8(math.Min(math.Max(float64(intensMatrix[y][x])+1.0/16.0*float64(errPix), 0), 255)) // 0 <= интенсивность <= 255
+
+			// Распространяем ошибку на снизу
+			intensMatrix[y][x] = uint8(math.Min(math.Max(float64(intensMatrix[y][x])+5.0/16.0*float64(errPix), 0), 255)) // 0 <= интенсивность <= 255
+
+			// Распространяем ошибку на снизу слева
+			intensMatrix[y][x] = uint8(math.Min(math.Max(float64(intensMatrix[y][x])+3.0/16.0*float64(errPix), 0), 255)) // 0 <= интенсивность <= 255
+		}
+	}
+
+	dstImgFile, err := os.Create(dstImgPath)
+	if err != nil {
+		return err
+	}
+
+	dstImg := image.NewRGBA(bounds)
+	for y := 0; y < bounds.Max.Y-bounds.Min.Y; y++ {
+		for x := 0; x < bounds.Max.X-bounds.Min.X; x++ {
+			intens := intensMatrix[y][x]
+			_, _, _, a := srcImg.At(bounds.Min.X+x, bounds.Min.Y+y).RGBA()
+			dstImg.Set(x, y, color.RGBA{intens, intens, intens, uint8(a / 256)})
+		}
+	}
+
+	err = png.Encode(dstImgFile, dstImg)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Функция, реализующая алгоритм упорядоченного размытия
 func OrderedDithering(srcImgPath string, dstImgPath string, order int) (errF error) {
 	defer func() {
@@ -81,23 +215,18 @@ func OrderedDithering(srcImgPath string, dstImgPath string, order int) (errF err
 		return err
 	}
 
-	srcImgReader, err := os.Open(srcImgPath)
+	srcImg, err := readSourceImg(srcImgPath)
 	if err != nil {
 		return err
 	}
-	defer srcImgReader.Close()
-	m, _, err := image.Decode(srcImgReader)
-	if err != nil {
-		return err
-	}
-	bounds := m.Bounds()
+	bounds := srcImg.Bounds()
 
 	dstImg := image.NewRGBA(bounds)
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
 			i := (y - bounds.Min.Y) % order
 			j := (x - bounds.Min.X) % order
-			r, g, b, a := m.At(x, y).RGBA()
+			r, g, b, a := srcImg.At(x, y).RGBA()
 			intens := int(math.Max(float64(r/256), math.Max(float64(g/256), float64(b/256))))
 			if (intens*order*order+1)/256 > D[i][j] {
 				dstImg.Set(x, y, color.RGBA{255, 255, 255, uint8(a / 256)})
@@ -111,7 +240,11 @@ func OrderedDithering(srcImgPath string, dstImgPath string, order int) (errF err
 	if err != nil {
 		return err
 	}
-	png.Encode(dstImgFile, dstImg)
+
+	err = png.Encode(dstImgFile, dstImg)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

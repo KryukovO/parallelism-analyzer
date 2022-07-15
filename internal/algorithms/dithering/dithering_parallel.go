@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	_ "image/jpeg"
 	"image/png"
 	"math"
 	"os"
@@ -24,16 +25,11 @@ func OrderedDitheringParallel(srcImgPath string, dstImgPath string, order int, t
 		return err
 	}
 
-	srcImgReader, err := os.Open(srcImgPath)
+	srcImg, err := readSourceImg(srcImgPath)
 	if err != nil {
 		return err
 	}
-	defer srcImgReader.Close()
-	m, _, err := image.Decode(srcImgReader)
-	if err != nil {
-		return err
-	}
-	bounds := m.Bounds()
+	bounds := srcImg.Bounds()
 
 	dstImg := image.NewRGBA(bounds)
 
@@ -53,7 +49,7 @@ func OrderedDitheringParallel(srcImgPath string, dstImgPath string, order int, t
 					for x := bounds.Min.X; x < bounds.Max.X; x++ {
 						i := (y - bounds.Min.Y) % order
 						j := (x - bounds.Min.X) % order
-						r, g, b, a := m.At(x, y).RGBA()
+						r, g, b, a := srcImg.At(x, y).RGBA()
 						intens := int(math.Max(float64(r/256), math.Max(float64(g/256), float64(b/256))))
 						if (intens*order*order+1)/256 > D[i][j] {
 							dstImg.Set(x, y, color.RGBA{255, 255, 255, uint8(a / 256)})
