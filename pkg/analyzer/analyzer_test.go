@@ -55,7 +55,9 @@ func TestAnalyze(t *testing.T) {
 			}(i)
 			return nil
 		},
+		"Test",
 		[]int{2, 4, 8},
+		1,
 	)
 
 	if err != nil {
@@ -74,7 +76,9 @@ func TestAnalyzeError(t *testing.T) {
 				return errors.New("some error")
 			}(i)
 		},
+		"Test",
 		[]int{2, 4, 8},
+		1,
 	)
 
 	if err == nil {

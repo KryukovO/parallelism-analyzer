@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/xuri/excelize/v2"
@@ -115,7 +116,54 @@ func (anl *Analyzer) SaveXLSX(dstFilePath string) (errF error) {
 	xlsx.DeleteSheet("Sheet1")
 
 	// Добавляем в документ диаграмму-график
-	// TO DO: https://xuri.me/excelize/en/chart/line.html
+	series := ""
+	for dataColumn := 'B'; dataColumn < threadColumn; dataColumn++ {
+		series += fmt.Sprintf(
+			"{\"name\":\"%v\", \"categories\": \"%v\", \"values\": \"%v\"},",
+			fmt.Sprintf("'%v'!$%v$1", anl.name, string(dataColumn)),
+			fmt.Sprintf("'%v'!$A$2:$A$%v", anl.name, testCount+1),
+			fmt.Sprintf("'%v'!$%v$2:$%v$%v", anl.name, string(dataColumn), string(dataColumn), testCount+1),
+		)
+	}
+	series = strings.TrimRight(series, ",")
+	format := fmt.Sprintf(`{
+        "type": "line",
+        "series": [%v],
+        "format":
+        {
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "x_offset": 15,
+            "y_offset": 10,
+            "print_obj": true,
+            "lock_aspect_ratio": false,
+            "locked": false
+        },
+        "legend":
+        {
+            "position": "top",
+            "show_legend_key": false
+        },
+        "title":
+        {
+            "name": "%v"
+        },
+        "plotarea":
+        {
+            "show_bubble_size": false,
+            "show_cat_name": false,
+            "show_leader_lines": false,
+            "show_percent": false,
+            "show_series_name": false,
+            "show_val": false
+        },
+        "show_blanks_as": "zero"
+    }`, series, anl.name)
+	format = strings.Replace(format, "\n", "", -1)
+	err = xlsx.AddChart(anl.name, fmt.Sprintf("%v2", string(threadColumn+2)), format)
+	if err != nil {
+		return fmt.Errorf("%v", err)
+	}
 
 	// Формируем файл
 	if err := xlsx.SaveAs(dstFilePath); err != nil {

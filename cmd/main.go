@@ -36,7 +36,7 @@ func main() {
 		},
 		"Прямое ДПФ",
 		[]int{1, 2, 4, 6},
-		20,
+		5,
 	)
 	if err != nil {
 		fmt.Println(err)
