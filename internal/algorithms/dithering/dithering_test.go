@@ -127,3 +127,81 @@ func TestOrderedDitheringParallel(t *testing.T) {
 		})
 	}
 }
+
+func TestThresholdDithering(t *testing.T) {
+	type args struct {
+		srcImgPath string
+		dstImgPath string
+		threshold  int
+	}
+
+	table := []struct {
+		name    string
+		args    args
+		isError bool
+	}{
+		{
+			name:    "dithering.ThresholdDithering(): Wrong threshold №1",
+			args:    args{srcImgPath: "source_file.png", dstImgPath: "", threshold: -100},
+			isError: true,
+		},
+		{
+			name:    "dithering.ThresholdDithering(): Wrong threshold №2",
+			args:    args{srcImgPath: "source_file.png", dstImgPath: "", threshold: 300},
+			isError: true,
+		},
+		{
+			name:    "dithering.ThresholdDithering(): Source file does not exists",
+			args:    args{srcImgPath: "source_file.png", dstImgPath: "", threshold: 100},
+			isError: true,
+		},
+	}
+
+	for _, test := range table {
+		t.Run(test.name, func(t *testing.T) {
+			err := ThresholdDithering(test.args.srcImgPath, test.args.dstImgPath, test.args.threshold)
+			if (err != nil) != test.isError {
+				t.Errorf("error received = %v, expected = %v", err, test.isError)
+			}
+		})
+	}
+}
+
+func TestFloydErrDithering(t *testing.T) {
+	type args struct {
+		srcImgPath string
+		dstImgPath string
+		threshold  int
+	}
+
+	table := []struct {
+		name    string
+		args    args
+		isError bool
+	}{
+		{
+			name:    "dithering.ThresholdDithering(): Wrong threshold №1",
+			args:    args{srcImgPath: "source_file.png", dstImgPath: "", threshold: -100},
+			isError: true,
+		},
+		{
+			name:    "dithering.ThresholdDithering(): Wrong threshold №2",
+			args:    args{srcImgPath: "source_file.png", dstImgPath: "", threshold: 300},
+			isError: true,
+		},
+		{
+			name:    "dithering.ThresholdDithering(): Source file does not exists",
+			args:    args{srcImgPath: "source_file.png", dstImgPath: "", threshold: 100},
+			isError: true,
+		},
+	}
+
+	for _, test := range table {
+		t.Run(test.name, func(t *testing.T) {
+			err := FloydErrDithering(test.args.srcImgPath, test.args.dstImgPath, test.args.threshold)
+			if (err != nil) != test.isError {
+				t.Errorf("error received = %v, expected = %v", err, test.isError)
+			}
+		})
+	}
+}

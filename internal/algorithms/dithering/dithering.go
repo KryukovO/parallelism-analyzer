@@ -99,6 +99,10 @@ func ThresholdDithering(srcImgPath string, dstImgPath string, threshold int) (er
 		}
 	}()
 
+	if threshold < 0 || threshold > 255 {
+		return errors.New("пороговое значение должно быть в пределах 0-255")
+	}
+
 	srcImg, err := readSourceImg(srcImgPath)
 	if err != nil {
 		return err
@@ -138,6 +142,10 @@ func FloydErrDithering(srcImgPath string, dstImgPath string, threshold int) (err
 			errF = fmt.Errorf("%v", msg)
 		}
 	}()
+
+	if threshold < 0 || threshold > 255 {
+		return errors.New("пороговое значение должно быть в пределах 0-255")
+	}
 
 	srcImg, err := readSourceImg(srcImgPath)
 	if err != nil {

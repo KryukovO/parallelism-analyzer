@@ -65,6 +65,27 @@ func TestAnalyze(t *testing.T) {
 	}
 }
 
+func TestAnalyzeEmptyName(t *testing.T) {
+	_, err := Analyze(
+		func(i int) error {
+			func(threads int) {
+				for j := 1; j < threads; j++ {
+					num := j
+					go func() { fmt.Println(num) }()
+				}
+			}(i)
+			return nil
+		},
+		"",
+		[]int{2, 4, 8},
+		1,
+	)
+
+	if err != nil {
+		t.Errorf("Something went wrong: %v", err)
+	}
+}
+
 func TestAnalyzeError(t *testing.T) {
 	_, err := Analyze(
 		func(i int) error {

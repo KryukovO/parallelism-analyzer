@@ -5,8 +5,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
+ 
+make: *** No rule to make target 'all'.  Stop.
 
-# Make data base, printed on Sun Jul 17 21:18:30 2022
+
+# Make data base, printed on Mon Jul 18 20:13:14 2022
 
 # Variables
 
@@ -63,7 +66,7 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 # environment
 PWD = /mnt/d/GoDir/parallelism-analyzer
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-672a3a2b-75f4-451f-a0d6-b3f7ff79a912.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-40e996fe-c252-460f-961a-93147412fe2c.sock
 # environment
 GOMODCACHE = /home/oleg/go/pkg/mod
 # environment
@@ -190,6 +193,7 @@ testCover:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
+ 
 #  Last modified 2022-07-14 21:08:12.9736276
 #  File has been updated.
 #  Successfully updated.
@@ -221,8 +225,6 @@ run:
 # strcache performance: lookups = 30 / hit rate = 23%
 # hash-table stats:
 # Load=23/8192=0%, Rehash=0, Collisions=1/30=3%
-# Finished Make data base on Sun Jul 17 21:18:30 2022
+# Finished Make data base on Mon Jul 18 20:13:14 2022
 
  
-make: *** No rule to make target 'all'.  Stop.
-
