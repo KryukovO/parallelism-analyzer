@@ -113,11 +113,11 @@ func ThresholdDithering(srcImgPath string, dstImgPath string, threshold int) (er
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
 			r, g, b, a := srcImg.At(x, y).RGBA()
-			intens := int(math.Max(float64(r/256), math.Max(float64(g/256), float64(b/256))))
+			intens := int(math.Max(float64(r%256), math.Max(float64(g%256), float64(b%256))))
 			if intens > threshold {
-				dstImg.Set(x, y, color.RGBA{255, 255, 255, uint8(a / 256)})
+				dstImg.Set(x, y, color.RGBA{255, 255, 255, uint8(a % 256)})
 			} else {
-				dstImg.Set(x, y, color.RGBA{0, 0, 0, uint8(a / 256)})
+				dstImg.Set(x, y, color.RGBA{0, 0, 0, uint8(a % 256)})
 			}
 		}
 	}
@@ -158,7 +158,7 @@ func FloydErrDithering(srcImgPath string, dstImgPath string, threshold int) (err
 		intensMatrix[y] = make([]uint8, bounds.Max.X-bounds.Min.X)
 		for x := 0; x < bounds.Max.X-bounds.Min.X; x++ {
 			r, g, b, _ := srcImg.At(x, y).RGBA()
-			intensMatrix[y][x] = uint8(math.Max(float64(r/256), math.Max(float64(g/256), float64(b/256))))
+			intensMatrix[y][x] = uint8(math.Max(float64(r%256), math.Max(float64(g%256), float64(b%256))))
 		}
 	}
 
@@ -198,7 +198,7 @@ func FloydErrDithering(srcImgPath string, dstImgPath string, threshold int) (err
 		for x := 0; x < bounds.Max.X-bounds.Min.X; x++ {
 			intens := intensMatrix[y][x]
 			_, _, _, a := srcImg.At(bounds.Min.X+x, bounds.Min.Y+y).RGBA()
-			dstImg.Set(x, y, color.RGBA{intens, intens, intens, uint8(a / 256)})
+			dstImg.Set(x, y, color.RGBA{intens, intens, intens, uint8(a % 256)})
 		}
 	}
 
@@ -235,11 +235,11 @@ func OrderedDithering(srcImgPath string, dstImgPath string, order int) (errF err
 			i := (y - bounds.Min.Y) % order
 			j := (x - bounds.Min.X) % order
 			r, g, b, a := srcImg.At(x, y).RGBA()
-			intens := int(math.Max(float64(r/256), math.Max(float64(g/256), float64(b/256))))
+			intens := int(math.Max(float64(r%256), math.Max(float64(g%256), float64(b%256))))
 			if (intens*order*order+1)/256 > D[i][j] {
-				dstImg.Set(x, y, color.RGBA{255, 255, 255, uint8(a / 256)})
+				dstImg.Set(x, y, color.RGBA{255, 255, 255, uint8(a % 256)})
 			} else {
-				dstImg.Set(x, y, color.RGBA{0, 0, 0, uint8(a / 256)})
+				dstImg.Set(x, y, color.RGBA{0, 0, 0, uint8(a % 256)})
 			}
 		}
 	}
