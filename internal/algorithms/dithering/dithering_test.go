@@ -263,3 +263,113 @@ func TestThresholdDitheringParallel(t *testing.T) {
 		})
 	}
 }
+
+func TestFloydErrDithering(t *testing.T) {
+	type args struct {
+		srcImgPath string
+		dstImgPath string
+		threshold  int
+	}
+
+	table := []struct {
+		name    string
+		args    args
+		isError bool
+	}{
+		{
+			name:    "dithering.FloydErrDithering(): Source file does not exists",
+			args:    args{srcImgPath: "source_file.png", dstImgPath: "", threshold: 100},
+			isError: true,
+		},
+		{
+			name:    "dithering.FloydErrDithering(): Wrong destination file",
+			args:    args{srcImgPath: "../../../assets/tiger.png", dstImgPath: "", threshold: 100},
+			isError: true,
+		},
+		{
+			name:    "dithering.FloydErrDithering(): Wrong threshold №1",
+			args:    args{srcImgPath: "../../../assets/tiger.png", dstImgPath: "../../../results/test_result.png", threshold: -100},
+			isError: true,
+		},
+		{
+			name:    "dithering.FloydErrDithering(): Wrong threshold №2",
+			args:    args{srcImgPath: "../../../assets/tiger.png", dstImgPath: "../../../results/test_result.png", threshold: 300},
+			isError: true,
+		},
+		{
+			name:    "dithering.FloydErrDithering(): Check result",
+			args:    args{srcImgPath: "../../../assets/tiger.png", dstImgPath: "../../../results/test_result.png", threshold: 100},
+			isError: false,
+		},
+	}
+
+	for _, test := range table {
+		t.Run(test.name, func(t *testing.T) {
+			err := FloydErrDithering(test.args.srcImgPath, test.args.dstImgPath, test.args.threshold)
+			if (err != nil) != test.isError {
+				t.Errorf("error received = %v, expected = %v", err, test.isError)
+			}
+			if err == nil && !test.isError {
+				assert.FileExists(t, test.args.dstImgPath)
+			}
+		})
+	}
+}
+
+func TestFloydErrDitheringParallel(t *testing.T) {
+	type args struct {
+		srcImgPath  string
+		dstImgPath  string
+		threshold   int
+		threadCount int
+	}
+
+	table := []struct {
+		name    string
+		args    args
+		isError bool
+	}{
+		{
+			name:    "dithering.FloydErrDitheringParallel(): Source file does not exists",
+			args:    args{srcImgPath: "source_file.png", dstImgPath: "", threshold: 100, threadCount: 2},
+			isError: true,
+		},
+		{
+			name:    "dithering.FloydErrDitheringParallel(): Wrong destination file",
+			args:    args{srcImgPath: "../../../assets/tiger.png", dstImgPath: "", threshold: 100, threadCount: 2},
+			isError: true,
+		},
+		{
+			name:    "dithering.FloydErrDitheringParallel(): Wrong threshold №1",
+			args:    args{srcImgPath: "../../../assets/tiger.png", dstImgPath: "../../../results/test_result.png", threshold: -100, threadCount: 2},
+			isError: true,
+		},
+		{
+			name:    "dithering.FloydErrDitheringParallel(): Wrong threshold №2",
+			args:    args{srcImgPath: "../../../assets/tiger.png", dstImgPath: "../../../results/test_result.png", threshold: 300, threadCount: 2},
+			isError: true,
+		},
+		{
+			name:    "dithering.FloydErrDitheringParallel(): Wrong thread count",
+			args:    args{srcImgPath: "../../../assets/tiger.png", dstImgPath: "../../../results/test_result.png", threshold: 100, threadCount: 0},
+			isError: true,
+		},
+		{
+			name:    "dithering.FloydErrDitheringParallel(): Check result",
+			args:    args{srcImgPath: "../../../assets/tiger.png", dstImgPath: "../../../results/test_result.png", threshold: 100, threadCount: 2},
+			isError: false,
+		},
+	}
+
+	for _, test := range table {
+		t.Run(test.name, func(t *testing.T) {
+			err := FloydErrDitheringParallel(test.args.srcImgPath, test.args.dstImgPath, test.args.threshold, test.args.threadCount)
+			if (err != nil) != test.isError {
+				t.Errorf("error received = %v, expected = %v", err, test.isError)
+			}
+			if err == nil && !test.isError {
+				assert.FileExists(t, test.args.dstImgPath)
+			}
+		})
+	}
+}
