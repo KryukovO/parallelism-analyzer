@@ -24,10 +24,15 @@ func ThresholdDitheringParallel(srcImgPath string, dstImgPath string, threshold 
 		return errors.New("пороговое значение должно быть в пределах 0-255")
 	}
 
+	if threadCount < 1 {
+		return errors.New("число потоков должно быть больше нуля")
+	}
+
 	srcImg, err := readSourceImg(srcImgPath)
 	if err != nil {
 		return err
 	}
+
 	bounds := srcImg.Bounds()
 
 	stepY := int(math.Max(math.Ceil(float64(bounds.Max.Y-bounds.Min.Y)/float64(threadCount)), 1))
@@ -54,12 +59,13 @@ func ThresholdDitheringParallel(srcImgPath string, dstImgPath string, threshold 
 			}()
 		}
 	}
-	wg.Wait()
 
 	dstImgFile, err := os.Create(dstImgPath)
 	if err != nil {
 		return err
 	}
+
+	wg.Wait()
 
 	err = png.Encode(dstImgFile, dstImg)
 	if err != nil {
@@ -77,6 +83,10 @@ func OrderedDitheringParallel(srcImgPath string, dstImgPath string, order int, t
 		}
 	}()
 
+	if threadCount < 1 {
+		return errors.New("число потоков должно быть больше нуля")
+	}
+
 	D, err := ditheringMatrix(order)
 	if err != nil {
 		return err
@@ -88,15 +98,10 @@ func OrderedDitheringParallel(srcImgPath string, dstImgPath string, order int, t
 	}
 	bounds := srcImg.Bounds()
 
-	dstImg := image.NewRGBA(bounds)
-
-	if threadCount < 1 {
-		return errors.New("число потоков должно быть больше нуля")
-	}
-
 	stepY := int(math.Max(math.Ceil(float64(bounds.Max.Y-bounds.Min.Y)/float64(threadCount)), 1))
 	var wg sync.WaitGroup
 
+	dstImg := image.NewRGBA(bounds)
 	for thread := 0; thread < threadCount; thread++ {
 		startY := bounds.Min.Y + stepY*thread
 		if startY < bounds.Max.Y {

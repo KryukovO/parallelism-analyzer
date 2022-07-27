@@ -12,8 +12,19 @@ import (
 
 // Тип, хранящий результаты анализа длительности и предоставляющий методы их обработки
 type Analyzer struct {
-	name     string
-	duration map[int][]time.Duration
+	name         string
+	threadCounts []int
+	testCount    int
+	duration     map[int][]time.Duration
+}
+
+// Конструктор
+func New(threadCounts []int, testCount int, name ...string) *Analyzer {
+	newName := "Временные характеристики"
+	if len(name) != 0 {
+		newName = name[0]
+	}
+	return &Analyzer{name: newName, threadCounts: threadCounts, testCount: testCount, duration: make(map[int][]time.Duration)}
 }
 
 // Функция однократного анализа длительности выполнения функции для единичного числа потоков
@@ -37,33 +48,27 @@ func analyzeOne(f func(int) error, threadCount int) (duration time.Duration, err
 }
 
 // Функция многократного анализа длительности выполнения функции на заданном множестве потоков
-func Analyze(f func(int) error, name string, threadCounts []int, testCount int) (anl Analyzer, errF error) {
+func (anl *Analyzer) Analyze(f func(int) error) (errF error) {
 	defer func() { // Функция отлова непредвиденной паники
 		if msg := recover(); msg != nil {
-			anl = Analyzer{}
 			errF = fmt.Errorf("%v", msg)
 		}
 	}()
 
-	if name == "" {
-		name = "Временные характеристики"
-	}
-
-	anl = Analyzer{name: name, duration: make(map[int][]time.Duration)} // Аллоцируем структуру, хранящую результаты
-	for _, threadCount := range threadCounts {                          // Выполняем функцию analyzeOne для заданной функции для каждого числа потоков из множества
-		anl.duration[threadCount] = make([]time.Duration, testCount)
+	for _, threadCount := range anl.threadCounts { // Выполняем функцию analyzeOne для заданной функции для каждого числа потоков из множества
+		anl.duration[threadCount] = make([]time.Duration, anl.testCount)
 		log.Printf("Запуск тестов для %v потока(-ов)", threadCount)
-		for testNum := 0; testNum < testCount; testNum++ {
-			log.Printf("Запуск теста №%v/%v", testNum+1, testCount)
+		for testNum := 0; testNum < anl.testCount; testNum++ {
+			log.Printf("Запуск теста №%v/%v", testNum+1, anl.testCount)
 			if duration, err := analyzeOne(f, threadCount); err != nil {
-				return Analyzer{}, err
+				return err
 			} else {
 				anl.duration[threadCount][testNum] = duration
 			}
 		}
 	}
 
-	return anl, nil
+	return nil
 }
 
 // Функция выгрузки данных в MS Excel
@@ -162,7 +167,7 @@ func (anl *Analyzer) SaveXLSX(dstFilePath string) (errF error) {
 	format = strings.Replace(format, "\n", "", -1)
 	err = xlsx.AddChart(anl.name, fmt.Sprintf("%v2", string(threadColumn+2)), format)
 	if err != nil {
-		return fmt.Errorf("%v", err)
+		return err
 	}
 
 	// Формируем файл
